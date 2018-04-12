@@ -1,4 +1,4 @@
-## Ruby on Rails Cheatsheet
+## Rails Setup and General Use 
 
 
 ### Create a new application
