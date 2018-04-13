@@ -6,9 +6,9 @@ Toggle between tree view
 ^0
 ```
 
-Move tabs left or right
+Move active  tab left or right
 ```
-cmd + opt + <- (or ->)
+⌘ + opt + left/right
 ```
 
 
@@ -24,8 +24,28 @@ shift + a
 ```
 
 
-### Text Editing
+### Text Editing/Manipulation
 Select entire word
 ```
-cmd + d
+⌘ + d
+```
+
+Select current line
+```
+⌘ + l
+```
+
+Delete to beginning of word
+```
+option + backspace
+```
+
+Set bookmark
+```
+⌘ + F2
+```
+
+Go to next bookmark
+```
+F2
 ```
