@@ -1,4 +1,4 @@
-## Rails Setup and General Use 
+## Rails Setup and General Use
 
 
 ### Create a new application
@@ -33,7 +33,7 @@ Create a route that maps a URL to the controller action
 
 ```rb
 # config/routes.rb
-get 'welcome' => 'pages#home'
+root 'home#index'
 ```
 
 Shorthand for connecting a route to a controller/action
@@ -80,6 +80,23 @@ Create a route to a static view, without an action in the controller
 # If there's a file called 'about.html.erb' in 'app/views/photos', this file will be
 #   automatically rendered when you call localhost:3000/photos/about
 get 'photos/about', to: 'photos#about'
+```
+
+Namespacing for Modularity
+```rb
+# Expects folder layout to be the same within view/controller/model
+# This will look in controllers/api/v1/locations for recordings.rb which belongs to locations
+namespace :api do
+  namespace :v1 do
+    resources :locations do
+      resources :recordings, module: :locations # adding module means it's nested in the locations folder
+    end
+  end
+end
+
+# Adding this also creates resources for locations individually so /locations/new
+# presents the form to create a new location
+resources :locations
 ```
 
 Reference: http://guides.rubyonrails.org/routing.html
@@ -345,3 +362,82 @@ Create a form with a custom action and method
 ```
 
 Reference: [http://guides.rubyonrails.org/form_helpers.html](http://guides.rubyonrails.org/form_helpers.html)
+
+### Layout and Flash Notices
+
+**application.html.erb**
+```html
+<%= render template: "layouts/header" %>
+<% if notice %>
+	<div class='alert alert-success text-center'>
+		<%= notice %>
+	</div>
+<% elsif alert %>
+	<div class='alert alert-danger text-center'>
+		<%= alert %>
+	</div>
+<% end %>
+
+<%= yield %>
+
+<%= render template: "layouts/footer" %>
+```
+
+**Controller**
+```rb
+def create
+  # save post
+  flash[:notice] = "Post successfully created"
+  redirect_to @post
+end
+```
+
+**Folder**
+```
+views
+|_ layouts
+|_|_ application.html.erb
+|_|_ _header.html.erb
+|_|_ _footer.html.erb
+```
+
+### Frequently Used Gems and Libraries
+```rb
+gem 'rails', '~> 5.0.2'
+gem 'puma', '~> 3.0'
+gem 'sass-rails', '~> 5.0'
+gem 'bootstrap-sass', '~> 3.3.7'
+gem 'jquery-rails'
+
+gem 'mongo', '~> 2.4', '>= 2.4.3' # MongoDB
+gem 'mongoid', '~> 6.1.0' # Mongo driver
+
+gem 'devise' # Authentication
+gem 'devise-masquerade' # Login as user
+
+gem 'nokogiri' # Data parser
+gem 'watir' # Run headless w/ browser = Watir::Browser.new :chrome, headless: true
+
+gem 'celluloid' # Pool threading
+
+
+
+group :test do
+  # Test Driven Development with rspec
+  gem 'rspec-rails'
+  gem 'database_cleaner'
+  gem 'factory_bot_rails'
+  gem 'mongoid-rspec'
+
+  # Behavior Driven Development w/ Cucumber
+  gem 'cucumber-rails'
+  gem 'capybara'
+end
+
+```
+
+```rb
+# Parsing
+require 'json'
+require 'open-uri' # grabs text from url. Use nokogiri to parse to json
+```
