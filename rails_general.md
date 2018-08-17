@@ -420,6 +420,8 @@ gem 'watir' # Run headless w/ browser = Watir::Browser.new :chrome, headless: tr
 
 gem 'celluloid' # Pool threading
 
+gem 'colorize' # Highlighting console and log output
+
 
 
 group :test do
