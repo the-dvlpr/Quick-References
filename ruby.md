@@ -1,6 +1,3 @@
-[back to overwiev](/../..)  
-Looking for [Rails](../Ruby-on-Rails-Cheatsheet.md)?
-
 # Ruby Cheatsheet
 
 ##### Table of Contents
@@ -40,8 +37,8 @@ Looking for [Rails](../Ruby-on-Rails-Cheatsheet.md)?
 ## Vars, Contants, Arrays, Hashes & Symbols
 
 ```Ruby
-my_variable = “Hello”
-my_variable.capitalize! # ! changes the value of the var same as my_name = my_name.capitalize
+my_variable = "Hello"
+my_variable.capitalize! # ! changes the value in place
 my_variable ||= "Hi" # ||= is a conditional assignment only set the variable if it was not set before.
 ```
 
@@ -54,25 +51,29 @@ MY_CONSTANT = # something
 ### Arrays
 
 ```Ruby
-my_array = [a,b,c,d,e]
-my_array[1] –– b
-my_array[2..-1] # c , d , e
+arr = ["a","b","c","d","e"]
+arr[1]  # "b"
+arr[2..-1] # ["c", "d", "e"]
 multi_d = [[0,1],[0,1]]
-[1, 2, 3] << 4 # [1, 2, 3, 4] same as [1, 2, 3].push(4)
+[1, 2, 3] << 4 # [1, 2, 3, 4] -> same as [1, 2, 3].push(4)
+
+ TODO  # Add delete/remove methods
 ```
 
 ### Hashes
 
 ```Ruby
-hash = { "key1" => "value1", "key2" => "value2" } # same as objects in JavaScript
-hash = { key1: "value1", key2: "value2" } # the same hash using symbols instead of strings
-my_hash = Hash.new # same as my_hash = {} – set a new key like so: pets["Stevie"] = "cat"
-pets["key1"] # value1
-pets["Stevie"] # cat
-my_hash = Hash.new("default value")
+hsh = { "key1" => "value1", "key2" => "value2" } # Regular key/val object
+hsh = { key1: "value1", key2: "value2" } # the same hash using symbols instead of strings
+hsh["key1"]  # value1
+h = Hash.new # same as h = {}
+h[:red_bull] = "Gives you wings"
+h = Hash.new("default val")  # adds default val to any non existent key. Can also retrieve w/ h.default
+h[:non_existent_key]  # "default val"
 hash.select{ |key, value| value > 3 } # selects all keys in hash that have a value greater than 3
 hash.each_key { |k| print k, " " } # ==> key1 key2
 hash.each_value { |v| print v } # ==> value1value2
+TODO  # each_pair
 
 my_hash.each_value { |v| print v, " " }
 # ==> 1 2 3
@@ -382,7 +383,7 @@ end
 i = 0
 loop do
   i += 1
-  print "I'm currently number #{i}” # a way to have ruby code in a string
+  print "I'm currently number #{i}" # a way to have ruby code in a string
   break if i > 5
 end
 ```
