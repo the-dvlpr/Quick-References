@@ -36,6 +36,8 @@
 
 ## Vars, Contants, Arrays, Hashes & Symbols
 
+### Variables
+
 ```Ruby
 my_variable = "Hello"
 my_variable.capitalize! # ! changes the value in place
@@ -45,38 +47,114 @@ my_variable ||= "Hi" # ||= is a conditional assignment only set the variable if 
 ### Constants
 
 ```Ruby
-MY_CONSTANT = # something
+MY_CONSTANT = # Throws warning, not error if changed
 ```
 
 ### Arrays
 
 ```Ruby
-arr = ["a","b","c","d","e"]
-arr[1]  # "b"
-arr[2..-1] # ["c", "d", "e"]
-multi_d = [[0,1],[0,1]]
-[1, 2, 3] << 4 # [1, 2, 3, 4] -> same as [1, 2, 3].push(4)
+# Create an Array
+letters_arr = ("a".."f").to_a  # ["a","b","c","d","e"]
+names_arr = %w[seph laura carl]  #=> ["seph", "laura", "carl"]
+nums_arr = (1..10).to_a   # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
- TODO  # Add delete/remove methods
+# Access and Info
+letters_arr.first # "a" see also .last
+letters_arr[1]  # "b"
+letters_arr[2..-1]  # ["c", "d", "e"] called a slice, takes a range or a comma seperated starting poing and num of elements to take [1, 2]
+multi_d = [[0,1],[0,1]]
+[1, 2, 3] << 4  # [1, 2, 3, 4] -> same as [1, 2, 3].push(4)
+letters_arr.size = #=> 6
+
+# Tail end
+letters_arr.pop()  # ["a", "b", "c", "d"] removes last -> "e"
+letters_arr.push("e")  # ["a", "b", "c", "d", "e"]
+
+# Beginning
+letters_arr.shift()  # ["b", "c", "d", "e"] removes first
+letters_arr.unshift("a")  # ["a", "b", "c", "d", "e"]
+
+# Remove/Keep selection
+letter = letters_arr.delete("b")  # returns and deletes first instance, see also .keep_if
+scores_arr = [97, 42, 75]
+scores_arr.delete_if { |score| score < 80 }  # [97] others deleted in place
+scores_arr.select{ |score| score < 80 }  # [42, 75]
+
+# Randomize
+nums_arr.sample  #=> 7
+nums_arr.sample(4)  #=> [6, 4, 2, 5]
+num = nums_arr.delete(nums_arr.sample)  # returns and deletes a random element
+
+# Iteration
+names_arr.each { |n| puts e.capitalize! }  # iterates through each element and applies the block
+names_arr.each_with_index{|n, i| puts "#{n} placed number #{i+1}"}
+(1..4).map { |i| i*i }  #=> [1, 4, 9, 16] returns new array
+
+
+TODO
+.any?
+.bsearch
+.flatten
+.join
+.size
+.uniq
 ```
 
 ### Hashes
 
 ```Ruby
-hsh = { "key1" => "value1", "key2" => "value2" } # Regular key/val object
-hsh = { key1: "value1", key2: "value2" } # the same hash using symbols instead of strings
-hsh["key1"]  # value1
-h = Hash.new # same as h = {}
-h[:red_bull] = "Gives you wings"
-h = Hash.new("default val")  # adds default val to any non existent key. Can also retrieve w/ h.default
-h[:non_existent_key]  # "default val"
-hash.select{ |key, value| value > 3 } # selects all keys in hash that have a value greater than 3
-hash.each_key { |k| print k, " " } # ==> key1 key2
-hash.each_value { |v| print v } # ==> value1value2
-TODO  # each_pair
+# Create a hash
+empty_hash = {}
+also_empty_hash = Hash.new
+default_hash = Hash.new(0)  # Any value accessed but not set will defualt to 1 (great for histograms). Can also retrieve w/ h.default
+string_hash = { "key1" => "value1", "key2" => "value2" }  # Using strings and rockets
+symbol_hash = { key1: "value3", key2: "value4" }  # Using symbols and colons
 
-my_hash.each_value { |v| print v, " " }
-# ==> 1 2 3
+number_hash = {}
+number_hash["one"] = 1
+number_hash["two"] = 2
+number_hash["three"] = 3
+number_hash => {"one": 1, "two": 2, "three": 3}
+
+# Accessing Values
+string_hash["key1"]  #=> value1
+symbol_hash[:key1]  #=> value3
+default_hash[:non_existent_key]  #=> 1
+
+# Adding / Removing Values
+also_empty_hash[:red_bull] = "Gives you wings"
+
+# Iteration
+number_hash.each_key {|k| print k, " "} #=> key1 key2
+number_hash.each_value {|v| print v, " "}  #=> 1 2 3
+number_hash.select {|k,v| v > 1} # selects all keys in hash that have a value greater than 1  #=> {"two"=>2, "three"=>3}
+number_hash.each {|k,v| print v ** 2, " "} #=> 1 4 9 See also: .each_pair
+
+#*** IRL Use ***
+number_hash.each do |k,v|
+  number_hash[k] += 1 if number_hash.has_key? k
+end
+#=> {"one"=>2, "two"=>3, "three"=>4}
+
+num_arr = []
+100.times {num_arr << rand(1..10)}
+
+num_arr.each do |v|
+  empty_hash[v] ? empty_hash[v] += 1 : empty_hash[v] = 1
+end
+#=> {4=>13, 1=>9, 5=>10, 10=>10, 9=>9, 3=>13, 8=>9, 6=>17, 2=>5, 7=>5}
+
+# GOOD UNTIL HERE
+
+TODO
+.has_value?
+.member?
+.merge
+.delete
+.delete_if
+.keep_if
+.key?
+.value?
 ```
 
 ### Symbols
@@ -95,7 +173,7 @@ my_hash = { key: "value", key2: "value" } # is equal to { :key => "value", :key2
 #### Functions to create Arrays
 
 ```Ruby
-"bla,bla".split(“,”) # takes sting and returns an array (here  ["bla","bla"])
+"a b c d".split(" ") # takes string and returns an array ["a", "b", "c", "d"] great for CSV
 ```
 
 ## Methods
@@ -264,34 +342,34 @@ Multyline comment
 
 ## Conditions
 
-### IF
+### If Statement
 
 ```Ruby
 if 1 < 2
-puts “one smaller than two”
+  puts “one smaller than two”
 elsif 1 > 2 # *careful not to mistake with else if. In ruby you write elsif*
-puts “elsif”
+  puts “elsif”
 else
-puts “false”
+  puts “false”
 end
 # or
 puts "be printed" if true
 puts 3 > 4 ? "if true" : "else" # else will be putted
 ```
 
-### unless
+### Unless Statement
 
 ```Ruby
 unless false # unless checks if the statement is false (opposite to if).
-puts “I’m here”
+  puts “I’m here”
 else
-puts “not here”
+  puts “not here”
 end
 # or
 puts "not printed" unless true
 ```
 
-### case
+### Case (switch)
 
 ```Ruby
 case my_var
@@ -383,7 +461,7 @@ end
 i = 0
 loop do
   i += 1
-  print "I'm currently number #{i}" # a way to have ruby code in a string
+  print "I'm currently number #{i}"= # a way to have ruby code in a string
   break if i > 5
 end
 ```
